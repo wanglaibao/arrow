@@ -11,3 +11,6 @@ dependencies {
 }
 
 apply plugin: 'kotlin-kapt'
+apply plugin: 'application'
+
+mainClassName = 'arrow.talks.Main'

@@ -1,20 +1,19 @@
 package arrow.talks
 
+import arrow.effects.MaybeK
+import arrow.effects.k
+import arrow.effects.monadError
+import arrow.effects.value
 import arrow.test.UnitSpec
-import arrow.test.laws.*
-import arrow.typeclasses.Eq
 import arrow.typeclasses.bindingCatch
 import io.kotlintest.KTestJUnitRunner
-import io.kotlintest.matchers.shouldBe
-import io.kotlintest.matchers.shouldNotBe
 import io.reactivex.Maybe
 import io.reactivex.observers.TestObserver
-import io.reactivex.schedulers.Schedulers
 import org.junit.runner.RunWith
 import java.util.concurrent.TimeUnit
 
 @RunWith(KTestJUnitRunner::class)
-class MaybeKTests : UnitSpec() {
+class TalkTests : UnitSpec() {
 
   init {
     "Multi-thread Maybes finish correctly" {
