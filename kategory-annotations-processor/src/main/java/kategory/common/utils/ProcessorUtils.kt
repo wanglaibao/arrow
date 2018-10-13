@@ -11,9 +11,10 @@ import me.eugeniomarletti.kotlin.metadata.getValueParameterOrNull
 import me.eugeniomarletti.kotlin.metadata.jvm.getJvmMethodSignature
 import me.eugeniomarletti.kotlin.metadata.kotlinMetadata
 import me.eugeniomarletti.kotlin.metadata.modality
-import org.jetbrains.kotlin.serialization.ProtoBuf
-import org.jetbrains.kotlin.serialization.deserialization.TypeTable
-import org.jetbrains.kotlin.serialization.deserialization.supertypes
+import me.eugeniomarletti.kotlin.metadata.shadow.metadata.ProtoBuf
+import me.eugeniomarletti.kotlin.metadata.shadow.metadata.deserialization.TypeTable
+import me.eugeniomarletti.kotlin.metadata.shadow.metadata.deserialization.supertypes
+import me.eugeniomarletti.kotlin.metadata.shadow.serialization.deserialization.getName
 import javax.lang.model.element.Element
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
@@ -40,9 +41,9 @@ interface ProcessorUtils : KotlinMetadataUtils {
             ?: knownError("Can't find annotated method ${methodElement.jvmMethodSignature}")
 
     fun recurseTypeclassInterfaces(
-            current: ClassOrPackageDataWrapper.Class,
-            typeTable: TypeTable,
-            acc: List<ClassOrPackageDataWrapper>): List<ClassOrPackageDataWrapper> {
+      current: ClassOrPackageDataWrapper.Class,
+      typeTable: TypeTable,
+      acc: List<ClassOrPackageDataWrapper>): List<ClassOrPackageDataWrapper> {
         val interfaces = current.classProto.supertypes(typeTable).map {
             it.extractFullName(current, failOnGeneric = false)
         }.filter {

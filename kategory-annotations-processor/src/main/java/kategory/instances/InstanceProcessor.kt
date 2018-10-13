@@ -4,7 +4,7 @@ import com.google.auto.service.AutoService
 import kategory.common.utils.AbstractProcessor
 import kategory.common.utils.ClassOrPackageDataWrapper
 import kategory.common.utils.knownError
-import org.jetbrains.kotlin.serialization.deserialization.TypeTable
+import me.eugeniomarletti.kotlin.metadata.shadow.metadata.deserialization.TypeTable
 import java.io.File
 import javax.annotation.processing.Processor
 import javax.annotation.processing.RoundEnvironment

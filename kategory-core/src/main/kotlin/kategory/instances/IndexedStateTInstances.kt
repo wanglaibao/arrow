@@ -41,7 +41,7 @@ interface IndexedStateTMonadInstance<F, S> : IndexedStateTFunctorInstance<F, S>,
             fa.ev().map(f, FF())
 
     override fun <A, B> flatMap(fa: IndexedStateTKind<F, S, S, A>, f: (A) -> IndexedStateTKind<F, S, S, B>): IndexedStateTKind<F, S, S, B> =
-            fa.ev().flatMap(f, FF())
+            fa.ev().flatMap(FF(), f)
 
 }
 

@@ -2,7 +2,7 @@ package kategory.derive
 
 import com.google.auto.service.AutoService
 import kategory.common.utils.*
-import org.jetbrains.kotlin.serialization.deserialization.TypeTable
+import me.eugeniomarletti.kotlin.metadata.shadow.metadata.deserialization.TypeTable
 import java.io.File
 import javax.annotation.processing.Processor
 import javax.annotation.processing.RoundEnvironment

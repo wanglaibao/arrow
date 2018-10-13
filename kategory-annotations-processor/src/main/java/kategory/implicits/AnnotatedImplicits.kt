@@ -1,7 +1,7 @@
 package kategory.implicits
 
 import kategory.common.utils.ClassOrPackageDataWrapper
-import org.jetbrains.kotlin.serialization.ProtoBuf
+import me.eugeniomarletti.kotlin.metadata.shadow.metadata.ProtoBuf
 import javax.lang.model.element.TypeElement
 
 sealed class AnnotatedImplicits {
@@ -10,10 +10,10 @@ sealed class AnnotatedImplicits {
 
     sealed class Consumer : AnnotatedImplicits() {
         data class ValueParameter(
-            override val classElement: TypeElement,
-            override val classOrPackageProto: ClassOrPackageDataWrapper,
-            val functionProto: ProtoBuf.Function,
-            val valueParameterProto: ProtoBuf.ValueParameter
+          override val classElement: TypeElement,
+          override val classOrPackageProto: ClassOrPackageDataWrapper,
+          val functionProto: ProtoBuf.Function,
+          val valueParameterProto: ProtoBuf.ValueParameter
         ) : Consumer()
     }
 

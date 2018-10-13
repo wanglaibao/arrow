@@ -210,7 +210,7 @@ class IndexedStateT<F, SA, SB, A>(
      * @param fas the function to apply.
      * @param MF [Monad] for the context [F].
      */
-    fun <B, SC> flatMap(fas: (A) -> IndexedStateTKind<F, SB, SC, B>, MF: Monad<F>): IndexedStateT<F, SA, SC, B> =
+    fun <B, SC> flatMap(MF: Monad<F>, fas: (A) -> IndexedStateTKind<F, SB, SC, B>): IndexedStateT<F, SA, SC, B> =
             invokeF(
                     MF.map(runF) { safsba ->
                         safsba.andThen { fsba ->
@@ -352,75 +352,75 @@ class IndexedStateT<F, SA, SB, A>(
     fun runS(s: SA, MF: Monad<F>): HK<F, SB> = MF.map(run(s, MF)) { it.a }
 
 }
-
-/**
- * Wrap the function with [IndexedStateT].
- *
- * @param MF [Monad] for the context [F].
- */
-inline fun <reified F, SA, SB, A> IndexedStateTFunKind<F, SA, SB, A>.toIndexedStateT(MF: Monad<F> = monad()): IndexedStateT<F, SA, SB, A> = IndexedStateT(this)
-
-/**
- * Wrap the function with [IndexedStateT].
- *
- * @param MF [Monad] for the context [F].
- */
-inline fun <reified F, SA, SB, A> IndexedStateTFun<F, SA, SB, A>.toIndexedStateT(MF: Monad<F> = monad()): IndexedStateT<F, SA, SB, A> = IndexedStateT(this, MF)
-
-/**
- * Lift a value of type `A` into `IndexedStateT<F, S, S, A>`.
- *
- * @param MF [Monad] for the context [F].
- * @param fa the value to lift.
- */
-inline fun <reified F, S, A> IndexedStateT.Companion.lift(fa: HK<F, A>, MF: Monad<F> = monad<F>()): IndexedStateT<F, S, S, A> = IndexedStateT.lift(MF, fa)
-
-/**
- * Return input without modifying it.
- *
- * @param AF [Applicative] for the context [F].
- */
-inline fun <reified F, S> IndexedStateT.Companion.get(AF: Applicative<F> = applicative<F>(), dummy: Unit = Unit): IndexedStateT<F, S, S, S> = IndexedStateT.get(AF)
-
-/**
- * Inspect a value of the state [S] with [f] `(S) -> T` without modifying the state.
- *
- * @param AF [Applicative] for the context [F].
- * @param f the function applied to extrat [T] from [S].
- */
-inline fun <reified F, S, T> IndexedStateT.Companion.inspect(AF: Applicative<F> = applicative<F>(), dummy: Unit = Unit, crossinline f: (S) -> T): IndexedStateT<F, S, S, T> = IndexedStateT.inspect(AF) { f(it) }
-
-/**
- * Set the state to a value [s] and return [Unit].
- *
- * @param AF [Applicative] for the context [F].
- * @param s value to set.
- */
-inline fun <reified F, SA, SB> IndexedStateT.Companion.set(s: SB, AF: Applicative<F> = applicative<F>()): IndexedStateT<F, SA, SB, Unit> = IndexedStateT.set(AF, s)
-
-/**
- * Set the state to a value [s] of type `HK<F, S>` and return [Unit].
- *
- * @param AF [Applicative] for the context [F].
- * @param s value to set.
- */
-inline fun <reified F, S> IndexedStateT.Companion.setF(s: HK<F, S> , AF: Applicative<F> = applicative<F>()): IndexedStateT<F, S, S, Unit> = IndexedStateT.setF(AF, s)
-
-/**
- * Modify the state with [f] `(S) -> S` and return [Unit].
- *
- * @param AF [Applicative] for the context [F].
- * @param f the modify function to apply.
- */
-inline fun <reified F, S> IndexedStateT.Companion.modify(AF: Applicative<F> = applicative<F>(), dummy: Unit = Unit, crossinline f: (S) -> S): StateT<F, S, Unit> = IndexedStateT.modify(AF) { f(it) }
-
-/**
- * Modify the state with an [Applicative] function [f] `(S) -> HK<F, S>` and return [Unit].
- *
- * @param AF [Applicative] for the context [F].
- * @param f the modify function to apply.
- */
-inline fun <reified F, S> IndexedStateT.Companion.modifyF(AF: Applicative<F> = applicative<F>(), dummy: Unit = Unit, crossinline f: (S) -> HK<F, S>): StateT<F, S, Unit> = IndexedStateT.modifyF(AF) { f(it) }
+//
+///**
+// * Wrap the function with [IndexedStateT].
+// *
+// * @param MF [Monad] for the context [F].
+// */
+//inline fun <reified F, SA, SB, A> IndexedStateTFunKind<F, SA, SB, A>.toIndexedStateT(MF: Monad<F> = monad()): IndexedStateT<F, SA, SB, A> = IndexedStateT(this)
+//
+///**
+// * Wrap the function with [IndexedStateT].
+// *
+// * @param MF [Monad] for the context [F].
+// */
+//inline fun <reified F, SA, SB, A> IndexedStateTFun<F, SA, SB, A>.toIndexedStateT(MF: Monad<F> = monad()): IndexedStateT<F, SA, SB, A> = IndexedStateT(this, MF)
+//
+///**
+// * Lift a value of type `A` into `IndexedStateT<F, S, S, A>`.
+// *
+// * @param MF [Monad] for the context [F].
+// * @param fa the value to lift.
+// */
+//inline fun <reified F, S, A> IndexedStateT.Companion.lift(fa: HK<F, A>, MF: Monad<F> = monad<F>()): IndexedStateT<F, S, S, A> = IndexedStateT.lift(MF, fa)
+//
+///**
+// * Return input without modifying it.
+// *
+// * @param AF [Applicative] for the context [F].
+// */
+//inline fun <reified F, S> IndexedStateT.Companion.get(AF: Applicative<F> = applicative<F>(), dummy: Unit = Unit): IndexedStateT<F, S, S, S> = IndexedStateT.get(AF)
+//
+///**
+// * Inspect a value of the state [S] with [f] `(S) -> T` without modifying the state.
+// *
+// * @param AF [Applicative] for the context [F].
+// * @param f the function applied to extrat [T] from [S].
+// */
+//inline fun <reified F, S, T> IndexedStateT.Companion.inspect(AF: Applicative<F> = applicative<F>(), dummy: Unit = Unit, crossinline f: (S) -> T): IndexedStateT<F, S, S, T> = IndexedStateT.inspect(AF) { f(it) }
+//
+///**
+// * Set the state to a value [s] and return [Unit].
+// *
+// * @param AF [Applicative] for the context [F].
+// * @param s value to set.
+// */
+//inline fun <reified F, SA, SB> IndexedStateT.Companion.set(s: SB, AF: Applicative<F> = applicative<F>()): IndexedStateT<F, SA, SB, Unit> = IndexedStateT.set(AF, s)
+//
+///**
+// * Set the state to a value [s] of type `HK<F, S>` and return [Unit].
+// *
+// * @param AF [Applicative] for the context [F].
+// * @param s value to set.
+// */
+//inline fun <reified F, S> IndexedStateT.Companion.setF(s: HK<F, S> , AF: Applicative<F> = applicative<F>()): IndexedStateT<F, S, S, Unit> = IndexedStateT.setF(AF, s)
+//
+///**
+// * Modify the state with [f] `(S) -> S` and return [Unit].
+// *
+// * @param AF [Applicative] for the context [F].
+// * @param f the modify function to apply.
+// */
+//inline fun <reified F, S> IndexedStateT.Companion.modify(AF: Applicative<F> = applicative<F>(), dummy: Unit = Unit, crossinline f: (S) -> S): StateT<F, S, Unit> = IndexedStateT.modify(AF) { f(it) }
+//
+///**
+// * Modify the state with an [Applicative] function [f] `(S) -> HK<F, S>` and return [Unit].
+// *
+// * @param AF [Applicative] for the context [F].
+// * @param f the modify function to apply.
+// */
+//inline fun <reified F, S> IndexedStateT.Companion.modifyF(AF: Applicative<F> = applicative<F>(), dummy: Unit = Unit, crossinline f: (S) -> HK<F, S>): StateT<F, S, Unit> = IndexedStateT.modifyF(AF) { f(it) }
 
 /**
  * Alias that represent stateful computation of the form `(S) -> Tuple2<S, A>` with a result in certain context `F`.
@@ -457,18 +457,18 @@ typealias StateTKindPartial<F, S> = IndexedStateTKindPartial<F, S, S>
  */
 typealias StateT<F, S, A> = IndexedStateT<F, S, S, A>
 
-/**
- * Constructor for StateT.
- * StateT<F, S, A> is an alias for IndexedStateT<F, S, S, A>
- */
-inline fun <reified F, S, A> StateT(noinline run: StateTFun<F, S, A>, MF: Applicative<F> = applicative()): StateT<F, S, A> = IndexedStateT(MF.pure(run))
-
-/**
- * Syntax for constructing a `StateT<F, S, A>` from a function `(S) -> HK<F, Tuple2<S, A>>`
- */
-inline fun <reified F, S, A> StateTFunKind<F, S, A>.toStateT(MF: Monad<F> = monad()): StateT<F, S, A> = StateT(this)
-
-/**
- * Alias that represents wrapped stateful computation in context `F`.
- */
-inline fun <reified F, S, A> StateTFun<F, S, A>.toStateT(MF: Monad<F> = monad()): StateT<F, S, A> = StateT(this, MF)
+///**
+// * Constructor for StateT.
+// * StateT<F, S, A> is an alias for IndexedStateT<F, S, S, A>
+// */
+//inline fun <reified F, S, A> StateT(noinline run: StateTFun<F, S, A>, MF: Applicative<F> = applicative()): StateT<F, S, A> = IndexedStateT(MF.pure(run))
+//
+///**
+// * Syntax for constructing a `StateT<F, S, A>` from a function `(S) -> HK<F, Tuple2<S, A>>`
+// */
+//inline fun <reified F, S, A> StateTFunKind<F, S, A>.toStateT(MF: Monad<F> = monad()): StateT<F, S, A> = StateT(this)
+//
+///**
+// * Alias that represents wrapped stateful computation in context `F`.
+// */
+//inline fun <reified F, S, A> StateTFun<F, S, A>.toStateT(MF: Monad<F> = monad()): StateT<F, S, A> = StateT(this, MF)

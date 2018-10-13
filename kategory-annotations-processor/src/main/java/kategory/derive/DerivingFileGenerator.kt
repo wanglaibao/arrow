@@ -6,7 +6,7 @@ import kategory.common.utils.removeBackticks
 import kategory.higherkinds.HKMarkerPostFix
 import kategory.higherkinds.KindPostFix
 import me.eugeniomarletti.kotlin.metadata.modality
-import org.jetbrains.kotlin.serialization.ProtoBuf
+import me.eugeniomarletti.kotlin.metadata.shadow.metadata.ProtoBuf
 import java.io.File
 
 fun argAsSeenFromReceiver(typeClassFirstTypeArg: String, abstractType: String, receiverType: String): String =

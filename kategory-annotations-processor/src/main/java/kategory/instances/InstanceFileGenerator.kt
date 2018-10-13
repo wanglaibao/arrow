@@ -7,15 +7,15 @@ import kategory.common.utils.extractFullName
 import kategory.common.utils.removeBackticks
 import kategory.common.utils.typeConstraints
 import me.eugeniomarletti.kotlin.metadata.modality
-import org.jetbrains.kotlin.serialization.ProtoBuf
-import org.jetbrains.kotlin.serialization.deserialization.TypeTable
-import org.jetbrains.kotlin.serialization.deserialization.supertypes
+import me.eugeniomarletti.kotlin.metadata.shadow.metadata.ProtoBuf
+import me.eugeniomarletti.kotlin.metadata.shadow.metadata.deserialization.TypeTable
+import me.eugeniomarletti.kotlin.metadata.shadow.metadata.deserialization.supertypes
 
 data class FunctionMapping(
-        val name: String,
-        val typeclass: ClassOrPackageDataWrapper.Class,
-        val function: ProtoBuf.Function,
-        val retTypeName: String)
+  val name: String,
+  val typeclass: ClassOrPackageDataWrapper.Class,
+  val function: ProtoBuf.Function,
+  val retTypeName: String)
 
 data class Instance(
         val `package`: Package,
