@@ -1,8 +1,10 @@
 package arrow.effects
 
+import arrow.Kind
 import arrow.core.*
 import arrow.effects.typeclasses.Disposable
 import arrow.effects.typeclasses.ExitCase
+import arrow.effects.typeclasses.Fiber
 import arrow.effects.typeclasses.Proc
 import arrow.higherkind
 import kotlinx.coroutines.*
@@ -112,7 +114,30 @@ data class DeferredK<out A>(private val deferred: Deferred<A>, val scope: Corout
           result
         }.k()
       }
+
+    fun <A, B> racePair(lh: DeferredKOf<A>,
+                        rh: DeferredKOf<B>): DeferredK<Either<Tuple2<A, Fiber<ForDeferredK, B>>, Tuple2<Fiber<ForDeferredK, A>, B>>> =
+      lh.startF().flatMap { fiberA ->
+        rh.startF().flatMap { fiberB ->
+          DeferredK.async<Either<Tuple2<A, Fiber<ForDeferredK, B>>, Tuple2<Fiber<ForDeferredK, A>, B>>> { cb ->
+            fiberA.join.fix().invokeOnCompletion { error ->
+              error?.let { cb(it.left()) } ?: cb((fiberA.join.fix().getCompleted() toT fiberB).left().right())
+            }
+            fiberB.join.fix().invokeOnCompletion { error ->
+              error?.let { cb(it.left()) } ?: cb((fiberA toT fiberB.join.fix().getCompleted()).right().right())
+            }
+          }
+        }
+      }
+
   }
+}
+
+
+fun <A> DeferredKOf<A>.startF(): DeferredK<Fiber<ForDeferredK, A>> {
+  val join = scope().asyncK(start = CoroutineStart.DEFAULT) { await() }
+  val cancel = DeferredK(start = CoroutineStart.LAZY) { join.cancel() }
+  return DeferredK.just(Fiber(join, cancel))
 }
 
 fun <A> DeferredKOf<A>.handleErrorWith(f: (Throwable) -> DeferredK<A>): DeferredK<A> =
