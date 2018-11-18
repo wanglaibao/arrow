@@ -1,0 +1,25 @@
+#font: monoidregular
+#arrowSize: 1
+#bendSize: 0.3
+#direction: down
+#gutter: 5
+#edgeMargin: 0
+#edges: rounded
+#fillArrows: false
+#fontSize: 10
+#leading: 1.25
+#lineWidth: 1
+#padding: 8
+#spacing: 40
+#stroke: #485C8A
+#title: Bracket
+#zoom: 1
+#.typeclass: fill=#FFFFFF visual=class bold
+[<typeclass>Bracket|bracket|bracketCase|guarantee|guaranteeCase|uncancelable]
+[<typeclass>MonadError]<-[<typeclass>Bracket]
+[<typeclass>ApplicativeError]<-[<typeclass>MonadError]
+[<typeclass>Monad]<-[<typeclass>MonadError]
+[<typeclass>Applicative]<-[<typeclass>ApplicativeError]
+[<typeclass>Functor]<-[<typeclass>Applicative]
+[<typeclass>Invariant]<-[<typeclass>Functor]
+[<typeclass>Applicative]<-[<typeclass>Monad]

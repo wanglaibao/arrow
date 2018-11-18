@@ -1,0 +1,30 @@
+#font: monoidregular
+#arrowSize: 1
+#bendSize: 0.3
+#direction: down
+#gutter: 5
+#edgeMargin: 0
+#edges: rounded
+#fillArrows: false
+#fontSize: 10
+#leading: 1.25
+#lineWidth: 1
+#padding: 8
+#spacing: 40
+#stroke: #485C8A
+#title: Effect
+#zoom: 1
+#.typeclass: fill=#FFFFFF visual=class bold
+[<typeclass>Effect|runAsync]
+[<typeclass>Async]<-[<typeclass>Effect]
+[<typeclass>MonadDefer]<-[<typeclass>Async]
+[<typeclass>MonadThrow]<-[<typeclass>MonadDefer]
+[<typeclass>Bracket]<-[<typeclass>MonadDefer]
+[<typeclass>MonadError]<-[<typeclass>MonadThrow]
+[<typeclass>ApplicativeError]<-[<typeclass>MonadError]
+[<typeclass>Monad]<-[<typeclass>MonadError]
+[<typeclass>Applicative]<-[<typeclass>ApplicativeError]
+[<typeclass>Functor]<-[<typeclass>Applicative]
+[<typeclass>Invariant]<-[<typeclass>Functor]
+[<typeclass>Applicative]<-[<typeclass>Monad]
+[<typeclass>MonadError]<-[<typeclass>Bracket]
